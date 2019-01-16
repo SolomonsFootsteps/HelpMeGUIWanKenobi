@@ -31,8 +31,8 @@ class MainWindow(tk.Frame):
     
     def make_widgets(self):
         for n in range(10):
-            lbl = tk.Label(parent=self, text="wat")
-            lbl.grid(row=lambda r=n: r, column=lambda c=n:c, sticky='')
+            lbl = tk.Label(self, text="wat")
+            lbl.grid(row=n, column=n, sticky='')
 
 if __name__ == '__main__':
     app = TkRoot()
