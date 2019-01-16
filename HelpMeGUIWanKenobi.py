@@ -7,7 +7,7 @@ import tkinter as tk
 def grid(num_rows, num_columns):
     def real_decorator(func):
         def wrapper(self, *args, **kwargs):
-            result = func(*args, **kwargs)
+            result = func(self, *args, **kwargs)
             for rows in range(num_rows):
                 return self.grid_rowconfigure(rows, weight=1)
             for cols in range(num_columns):
@@ -27,6 +27,7 @@ class MainWindow(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self, parent=None)
         self.parent = parent
+        self.make_widgets()
     
     def make_widgets(self):
         for n in range(10):
@@ -35,4 +36,5 @@ class MainWindow(tk.Frame):
 
 if __name__ == '__main__':
     app = TkRoot()
+    app.minsize(50, 50)
     app.mainloop()
