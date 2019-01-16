@@ -6,7 +6,7 @@ import tkinter as tk
 
 def grid(num_rows, num_columns):
     def real_decorator(func):
-        def wrapper(*args, **kwargs):
+        def wrapper(self, *args, **kwargs):
             result = func(*args, **kwargs)
             for rows in range(num_rows):
                 return self.grid_rowconfigure(rows, weight=1)
