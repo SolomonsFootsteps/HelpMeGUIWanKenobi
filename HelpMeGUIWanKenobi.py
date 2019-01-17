@@ -10,9 +10,9 @@ def grid(num_rows, num_columns):
         def wrapper(self, *args, **kwargs):
             result = func(self, *args, **kwargs)
             for rows in range(num_rows):
-                return self.grid_rowconfigure(rows, weight=1)
+                self.grid_rowconfigure(rows, weight=1)
             for cols in range(num_columns):
-                return self.grid_columnconfigure(cols, weight=1)
+                self.grid_columnconfigure(cols, weight=1)
             return result
         return wrapper
     return real_decorator
@@ -31,7 +31,7 @@ class TkRoot(tk.Tk):
 class MainWindow(tk.Frame):
     @grid(10, 10)
     def __init__(self, parent):
-        tk.Frame.__init__(self, parent=None)
+        tk.Frame.__init__(self)
         self.parent = parent
         parent.title("First")
         self.make_widgets()
@@ -43,15 +43,15 @@ class MainWindow(tk.Frame):
 
 # this version will give the exact same result as the above
 class SecondWindow(tk.Toplevel):
-    @grid(2000, 10)
+    @grid(20, 10)
     def __init__(self, parent):
-        tk.Toplevel.__init__(self, parent=None)
+        tk.Toplevel.__init__(self)
         self.parent = parent
         self.title("Second")
         self.make_widgets()
     
     def make_widgets(self):
-        for n in range(10):
+        for n in range(20):
             lbl = tk.Label(self, text="wat")
             lbl.grid(row=n, column=n, sticky='') 
 
@@ -59,7 +59,7 @@ class SecondWindow(tk.Toplevel):
 class ThirdWindow(tk.Toplevel):
     @grid(2, 2)
     def __init__(self, parent):
-        tk.Toplevel.__init__(self, parent=None)
+        tk.Toplevel.__init__(self)
         self.parent = parent
         self.title("Third")
         self.make_widgets()
