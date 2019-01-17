@@ -4,15 +4,17 @@ import tkinter as tk
 
 # I definitely AM terrible at decorators and I'd like to not be
 
-# @grid() is almost working, but not quite
+# @grid() is finally working!
 def grid(num_rows, num_columns):
     def real_decorator(func):
         def wrapper(self, *args, **kwargs):
             result = func(self, *args, **kwargs)
             for rows in range(num_rows):
-                self.grid_rowconfigure(rows, weight=1)
+                self.grid_rowconfigure(rows,minsize=5,weight=1)
+                print("row "+str(rows)+" configured")
             for cols in range(num_columns):
-                self.grid_columnconfigure(cols, weight=1)
+                self.grid_columnconfigure(cols,minsize=5,weight=1)
+                print("column "+str(cols)+" configured")
             return result
         return wrapper
     return real_decorator
@@ -25,13 +27,10 @@ class TkRoot(tk.Tk):
         SecondWindow(parent=self)
         ThirdWindow(parent=self)
         
-
-# this test case makes it seem like @grid(10,10) works, but it really doesn't
-
 class MainWindow(tk.Frame):
     @grid(10, 10)
     def __init__(self, parent):
-        tk.Frame.__init__(self)
+        tk.Frame.__init__(self, parent=None)
         self.parent = parent
         parent.title("First")
         self.make_widgets()
@@ -39,27 +38,25 @@ class MainWindow(tk.Frame):
     def make_widgets(self):
         for n in range(10):
             lbl = tk.Label(self, text="wat")
-            lbl.grid(row=n, column=n, sticky='')
+            lbl.grid(row=(2*n), column=n, sticky='')
 
-# this version will give the exact same result as the above
 class SecondWindow(tk.Toplevel):
-    @grid(20, 10)
+    @grid(100, 10)
     def __init__(self, parent):
-        tk.Toplevel.__init__(self)
+        tk.Toplevel.__init__(self, parent=None)
         self.parent = parent
         self.title("Second")
         self.make_widgets()
     
     def make_widgets(self):
-        for n in range(20):
+        for n in range(10):
             lbl = tk.Label(self, text="wat")
-            lbl.grid(row=n, column=n, sticky='') 
+            lbl.grid(row=(2*n), column=n, sticky='') 
 
-# this version will ALSO give the same result
 class ThirdWindow(tk.Toplevel):
     @grid(2, 2)
     def __init__(self, parent):
-        tk.Toplevel.__init__(self)
+        tk.Toplevel.__init__(self, parent=None)
         self.parent = parent
         self.title("Third")
         self.make_widgets()
@@ -67,8 +64,7 @@ class ThirdWindow(tk.Toplevel):
     def make_widgets(self):
         for n in range(10):
             lbl = tk.Label(self, text="wat")
-            lbl.grid(row=n, column=n, sticky='') 
-
+            lbl.grid(row=(2*n), column=n, sticky='') 
 
 if __name__ == '__main__':
     app = TkRoot()
